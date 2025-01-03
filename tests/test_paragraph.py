@@ -20,4 +20,4 @@ def test_chunk_file_kafka():
     assert paragraphs[2].chapter_title == "ERSTES KAPITEL"
     assert paragraphs[2].chapter_subtitle == "VERHAFTUNG · GESPRÄCH MIT FRAU GRUBACH · DANN FRÄULEIN BÜRSTNER"
     assert paragraphs[2].paragraph_number == 3
-    assert paragraphs[2].content.startswith('„Wer sind Sie?" fragte K.')
+    assert paragraphs[2].content.startswith('Ohne auf dieses Angebot zu antworten')

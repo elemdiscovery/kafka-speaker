@@ -16,6 +16,7 @@ def chunk_file(file_path: str, skip_past: str, min_paragraph_length: int = 200) 
 
     # Skip to the book title
     start_index = next(i for i, line in enumerate(lines) if skip_past in line)
+    start_index += 1
     lines = lines[start_index:]
 
     # Skip past initial indented metadata and blank lines
