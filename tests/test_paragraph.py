@@ -1,11 +1,12 @@
 import pytest
-from kafka_speaker.paragraph import chunk_file, Paragraph
+from kafka_speaker.paragraph import file_paragraphs, Paragraph
 
 def test_chunk_file_kafka():
     # Get first few paragraphs
-    paragraphs = list(chunk_file(
+    paragraphs = list(file_paragraphs(
         'pg69327-kafka-der-prozess.txt',
-        skip_past='*** START OF THE PROJECT GUTENBERG EBOOK DER PROZESS: ROMAN ***'
+        skip_past='*** START OF THE PROJECT GUTENBERG EBOOK',
+        end_at='*** END OF THE PROJECT GUTENBERG EBOOK'
     ))
     
     # Test first paragraph (the arrest)
@@ -21,3 +22,11 @@ def test_chunk_file_kafka():
     assert paragraphs[2].chapter_subtitle == "VERHAFTUNG · GESPRÄCH MIT FRAU GRUBACH · DANN FRÄULEIN BÜRSTNER"
     assert paragraphs[2].paragraph_number == 3
     assert paragraphs[2].content.startswith('Ohne auf dieses Angebot zu antworten')
+
+def test_chunk_short_file_kafka():
+    paragraphs = list(file_paragraphs(
+        'pg30570-kafka-grosser-larm.txt',
+        skip_past='*** START OF THE PROJECT GUTENBERG EBOOK',
+        end_at='*** END OF THE PROJECT GUTENBERG EBOOK'
+    ))
+    assert len(paragraphs) == 1

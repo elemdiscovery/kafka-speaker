@@ -10,6 +10,32 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Kafka Speaker CLI - Small",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/kafka_speaker/cli.py",
+            "args": [
+                "speak",
+                "--file", "tests/data/pg30570-kafka-grosser-larm.txt",
+                "--output", "${workspaceFolder}/output",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Kafka Speaker CLI - Large",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/kafka_speaker/cli.py",
+            "args": [
+                "speak",
+                "--file", "tests/data/pg69327-kafka-der-prozess.txt",
+                "--output", "${workspaceFolder}/output",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }

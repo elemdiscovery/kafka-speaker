@@ -1,6 +1,7 @@
 from dataclasses import dataclass, asdict
 from typing import List, Iterator
 import re
+from itertools import takewhile, dropwhile
 
 @dataclass
 class Paragraph:
@@ -9,19 +10,24 @@ class Paragraph:
     paragraph_number: int
     content: str
 
+    def __str__(self):
+        parts = [self.chapter_title, self.chapter_subtitle, self.content]
+        return "\n".join(part for part in parts if part)
 
-def chunk_file(file_path: str, skip_past: str, min_paragraph_length: int = 200) -> Iterator[Paragraph]:
+
+def file_paragraphs(file_path: str, skip_past: str, end_at: str, min_paragraph_length: int = 200) -> Iterator[Paragraph]:
     with open(file_path, 'r', encoding='utf-8') as file:
-        lines = file.readlines()
-
-    # Skip to the book title
-    start_index = next(i for i, line in enumerate(lines) if skip_past in line)
-    start_index += 1
-    lines = lines[start_index:]
-
-    # Skip past initial indented metadata and blank lines
-    while lines and (not lines[0].strip() or lines[0].startswith(' ' * 4)):
-        lines.pop(0)
+        # Skip until we find the start marker
+        lines = dropwhile(lambda line: skip_past not in line, file)
+        next(lines)  # Skip the marker line itself
+        
+        # Take lines until we hit the end marker (if specified)
+        if end_at:
+            lines = takewhile(lambda line: end_at not in line, lines)
+        
+        # Convert to list and skip initial metadata
+        lines = list(lines)
+        lines = dropwhile(lambda line: not line.strip() or line.startswith(' ' * 4), lines)
 
     chapter_title = ""
     subtitle = ""
@@ -40,7 +46,7 @@ def chunk_file(file_path: str, skip_past: str, min_paragraph_length: int = 200) 
             continue
 
         # Check for chapter title (all caps line)
-        if re.match(r'^[A-ZÄÖÜ\s·]+$', line) and not any(c.islower() for c in line):
+        if line and not any(c.islower() for c in line.strip()):
             # If we have content, yield the previous paragraph first
             if paragraph_content and len(' '.join(paragraph_content)) >= min_paragraph_length:
                 paragraph_number += 1
