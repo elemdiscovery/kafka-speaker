@@ -22,7 +22,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["openai", "requests", "environs"]
+dependencies = ["openai", "requests", "environs", "slack_sdk"]
 
 [project.urls]
 Documentation = "https://github.com/Lawrence Moorehead/kafka-speaker#readme"

@@ -3,11 +3,8 @@ import os
 import environs
 import openai
 from kafka_speaker.speaker import process_book
+from kafka_speaker.slack import upload_to_slack
 
-def convert_to_slack():
-    # Function to convert received content into Slack test data
-    print("Not implemented yet")
-    pass
 
 def main():
     parser = argparse.ArgumentParser(description='CLI for parsing a Gutenberg book and turning it into a conversation in Slack with file attachments in order to generate sample data.')
@@ -26,8 +23,9 @@ def main():
 
     # Sub-parser for the 'convert' command
     parser_slack = subparsers.add_parser('slack', help='Send parsed data to a Slack channel.')
-    # Add arguments specific to the 'convert' command if needed
-    # parser_convert.add_argument('--input', type=str, help='Input data for conversion')
+    parser_slack.add_argument('--input', type=str, help='Input directory containing conversations.json and attachments', default='output')
+    parser_slack.add_argument('--channel', type=str, help='Slack channel to send the conversation to. By default, the channel is set in the environment variable SLACK_CHANNEL_ID.', default=None)
+    parser_slack.add_argument('--file-channel', type=str, help='Slack channel to send the files to. By default, the channel is set in the environment variable SLACK_FILE_CHANNEL_ID.', default=None)
 
     args = parser.parse_args()
     env = environs.Env()
@@ -48,7 +46,10 @@ def main():
         print(f"Successfully processed document. Output saved to {args.output}")
 
     elif args.command == 'slack':
-        convert_to_slack()
+        token = env("SLACK_BOT_TOKEN")
+        channel = args.channel or env("SLACK_CHANNEL_ID")
+        file_channel = args.file_channel or env("SLACK_FILE_CHANNEL_ID") or args.channel or env("SLACK_CHANNEL_ID")
+        upload_to_slack(args.input, channel, token, file_channel)
     else:
         parser.print_help()
 

@@ -69,11 +69,13 @@ In particular we want to:
 * Use emojis in the messages, but don't just put them at the end of the message, mix them throughout the message.
 * Give detailed `description` of the files that the people are sending. You should include at least three paragraphs of decsription of the file contents.
 * Please come up with excuses for sending files and referring to them in the conversation. One of the goals is to make the conversation look visually interesting when displayed in Slack, so having additional file attachments will help.
-* Half of the attachments should be images, and the other half should be office documents.
+* Some of the attachments should be images, and the others should be office documents (PDFs, Word documents, markdown, etc).
 
 When you receive a paragraph of Kafka-esque text, you should respond with an array of English messages. Try to be whimsical with your grammar and sentence structure, and keep a theme and writing style for the senders in the conversation.
 
 Do not directly use the name "Kafka" in the conversation or file descriptions--we are trying to make Kafka-esque conversations, not refer to Kafka.
+
+Do not use the names of characters when describing the file attachments--describe their situation instead.
 
 Image attachments should be described as .png files. Other types of attachments should be typical office documents, such as PDFs, Word documents, etc. You can also describe markdown and text files.
 

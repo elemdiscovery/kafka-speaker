@@ -1,10 +1,11 @@
 import pytest
 from kafka_speaker.paragraph import file_paragraphs, Paragraph
+import os
 
 def test_chunk_file_kafka():
     # Get first few paragraphs
     paragraphs = list(file_paragraphs(
-        'pg69327-kafka-der-prozess.txt',
+        os.path.join(os.path.dirname(__file__), "data", "pg69327-kafka-der-prozess.txt"),
         skip_past='*** START OF THE PROJECT GUTENBERG EBOOK',
         end_at='*** END OF THE PROJECT GUTENBERG EBOOK'
     ))
@@ -25,7 +26,7 @@ def test_chunk_file_kafka():
 
 def test_chunk_short_file_kafka():
     paragraphs = list(file_paragraphs(
-        'pg30570-kafka-grosser-larm.txt',
+        os.path.join(os.path.dirname(__file__), "data", "pg30570-kafka-grosser-larm.txt"),
         skip_past='*** START OF THE PROJECT GUTENBERG EBOOK',
         end_at='*** END OF THE PROJECT GUTENBERG EBOOK'
     ))
